@@ -25,12 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${spaceGrotesk.className} min-h-screen bg-background`}>
-        <ThemeProvider 
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          storageKey="vimal-theme"
-        >
+        <ThemeProvider>
           <BackgroundBubbles />
           {children}
         </ThemeProvider>
