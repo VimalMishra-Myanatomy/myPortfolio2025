@@ -1,11 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "./theme-provider"
 import { BackgroundBubbles } from "./components/background-bubbles"
 
-const inter = Inter({ subsets: ["latin"] })
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "Vimal Mishra - Senior Software Developer",
@@ -20,10 +23,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>
-        <BackgroundBubbles />
-        <ThemeProvider defaultTheme="light">{children}</ThemeProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${spaceGrotesk.className} min-h-screen bg-background`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <BackgroundBubbles />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
