@@ -28,30 +28,15 @@ export default function Contact({ sectionRef }: ContactProps) {
   }, [easterEggCount])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus('idle')
+    e.preventDefault();
+    setIsSubmitting(true);
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+    // Simulate sending for a moment
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-      if (response.ok) {
-        setSubmitStatus('success')
-        setFormData({ name: '', email: '', message: '' })
-      } else {
-        setSubmitStatus('error')
-      }
-    } catch (error) {
-      setSubmitStatus('error')
-    } finally {
-      setIsSubmitting(false)
-    }
+    setIsSubmitting(false);
+    setSubmitStatus('success');
+    setFormData({ name: '', email: '', message: '' });
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -218,15 +203,53 @@ export default function Contact({ sectionRef }: ContactProps) {
               </motion.button>
               <AnimatePresence>
                 {submitStatus === 'success' && (
-                  <motion.p
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="text-green-600 dark:text-green-400 text-sm text-center flex items-center justify-center gap-2"
+                    className="bg-gradient-to-r from-blue-50 to-violet-50 dark:from-blue-900/50 dark:to-violet-900/50 p-4 rounded-lg mt-4 border border-blue-100 dark:border-blue-800"
                   >
-                    <Sparkles className="w-4 h-4" />
-                    Message sent successfully! I'll get back to you soon.
-                  </motion.p>
+                    <p className="text-slate-800 dark:text-slate-200 text-sm text-center flex flex-col items-center gap-3">
+                      <span className="text-lg font-semibold flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-yellow-500" />
+                        Plot Twist! 🎭
+                      </span>
+                      <span>
+                        This form doesn't actually work... <i>yet</i>! But here's the deal:
+                      </span>
+                      <span className="font-medium text-blue-600 dark:text-blue-400">
+                        If you hire me, I'll not only fix this form but also build you something 10x more awesome! 
+                      </span>
+                      <span className="text-xs opacity-80">
+                        (In the meantime, feel free to reach out via email or LinkedIn 😉)
+                      </span>
+                      <motion.div 
+                        className="flex gap-2 mt-2"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <motion.a
+                          href="mailto:mishravimal000@gmail.com"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                        >
+                          Email Me
+                        </motion.a>
+                        <motion.a
+                          href="https://www.linkedin.com/in/mishravimal786/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="px-3 py-1.5 rounded-md bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                        >
+                          LinkedIn
+                        </motion.a>
+                      </motion.div>
+                    </p>
+                  </motion.div>
                 )}
                 {submitStatus === 'error' && (
                   <motion.p
@@ -235,7 +258,7 @@ export default function Contact({ sectionRef }: ContactProps) {
                     exit={{ opacity: 0, y: -10 }}
                     className="text-red-600 dark:text-red-400 text-sm text-center"
                   >
-                    Failed to send message. Please try again or email directly.
+                    Oops! Something went wrong. Please try again or email directly.
                   </motion.p>
                 )}
               </AnimatePresence>
