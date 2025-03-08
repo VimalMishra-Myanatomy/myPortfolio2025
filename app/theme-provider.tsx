@@ -10,6 +10,9 @@ type ThemeProviderProps = {
   children: React.ReactNode
   defaultTheme?: Theme
   storageKey?: string
+  attribute?: string
+  enableSystem?: boolean
+  disableTransitionOnChange?: boolean
 }
 
 type ThemeProviderState = {
@@ -28,6 +31,9 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "vimal-theme",
+  attribute = "class",
+  enableSystem = true,
+  disableTransitionOnChange = false,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme)
@@ -45,9 +51,22 @@ export function ThemeProvider({
     if (!mounted) return
 
     const root = window.document.documentElement
+
+    // Remove transition classes if disableTransitionOnChange is true
+    if (disableTransitionOnChange) {
+      root.classList.add("no-transitions")
+      setTimeout(() => root.classList.remove("no-transitions"), 0)
+    }
+
+    // Remove existing theme classes
     root.classList.remove("light", "dark")
 
-    if (theme === "system") {
+    // Add the attribute if it's not "class"
+    if (attribute !== "class") {
+      root.setAttribute(attribute, theme)
+    }
+
+    if (theme === "system" && enableSystem) {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light"
@@ -55,7 +74,7 @@ export function ThemeProvider({
     } else {
       root.classList.add(theme)
     }
-  }, [theme, mounted])
+  }, [theme, mounted, attribute, disableTransitionOnChange, enableSystem])
 
   const value = {
     theme,
@@ -66,7 +85,7 @@ export function ThemeProvider({
   }
 
   if (!mounted) {
-    return null
+    return <>{children}</>
   }
 
   return (
