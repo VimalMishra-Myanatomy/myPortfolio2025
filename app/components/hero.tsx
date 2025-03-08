@@ -186,7 +186,7 @@ export default function Hero({ sectionRef }: HeroProps) {
           >
             <div className="flex items-center gap-2">
               <Code className="w-4 h-4" />
-              <span>5+ Years Experience</span>
+              <span>3+ Years Experience</span>
             </div>
             <div className="flex items-center gap-2">
               <Rocket className="w-4 h-4" />
